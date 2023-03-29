@@ -3,6 +3,7 @@
 {% block body %}
 <h1 class="display-1">
     My Profile
+    Role: {{current_user.role}} <br>
     <a href="/myprofile/edit">
         <img width="40" src="/static/edit.png">
     </a>
@@ -24,6 +25,7 @@
         Email: {{current_user.email}} <br>
 
     </div>
+
 </div>
 <br>
 

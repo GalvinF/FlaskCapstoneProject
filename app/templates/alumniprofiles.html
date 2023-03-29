@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 style="font-family: Georgia">Alumni Profiles</h1>
+
+<p style="font-family: Georgia">Here is a list of the OTCSA alumni</p>
+{% for user in users %}
+
+    {{user.fname}}, 
+
+{% endfor %}
+{% endblock %}

@@ -48,5 +48,17 @@ def profileEdit():
     # then sends the user to the page with the edit profile form
     form.fname.data = current_user.fname
     form.lname.data = current_user.lname
+    form.role.data = current_user.role
+
+    currUser.update(
+            lname = form.lname.data,
+            fname = form.fname.data,
+            role = form.role.data
+        )
 
     return render_template('profileform.html', form=form)
+
+@app.route('/alumniprofiles')
+def alumniProfiles():
+    users = User.objects()
+    return render_template('alumniprofiles.html',users=users)
