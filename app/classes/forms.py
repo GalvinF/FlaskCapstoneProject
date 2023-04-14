@@ -21,6 +21,14 @@ class BlogForm(FlaskForm):
     tag = StringField('Tag', validators=[DataRequired()])
     submit = SubmitField('Blog')
 
+class EventForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired()])
+    time = StringField('Time', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
+    number_of_participants = StringField('Number of Participants', validators=[DataRequired()])
+    how_to_join = StringField('How to join', validators=[DataRequired()])
+
 class CommentForm(FlaskForm):
     content = TextAreaField('Comment', validators=[DataRequired()])
     submit = SubmitField('Comment')
