@@ -6,8 +6,8 @@ from app import app
 import mongoengine.errors
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user
-from app.classes.data import Blog, Comment
-from app.classes.forms import BlogForm, CommentForm
+from app.classes.data import Blog, Comment, Event
+from app.classes.forms import BlogForm, CommentForm, EventForm
 from flask_login import login_required
 import datetime as dt
 
@@ -189,7 +189,7 @@ def commentEdit(commentID):
     if current_user != editComment.author:
         flash("You can't edit a comment you didn't write.")
         return redirect(url_for('blog',blogID=editComment.blog.id))
-    blog = Bog.objects.get(id=editComment.blog.id)
+    blog = Blog.objects.get(id=editComment.blog.id)
     form = CommentForm()
     if form.validate_on_submit():
         editComment.update(
@@ -209,3 +209,154 @@ def commentDelete(commentID):
     deleteComment.delete()
     flash('The comments was deleted.')
     return redirect(url_for('blog',blogID=deleteComment.blog.id)) 
+
+@app.route('/event/list')
+@app.route('/events')
+@login_required
+def eventList():
+    events = Event.objects()
+    return render_template('events.html',events=events)
+
+# This route will get one specific blog and any comments associated with that blog.  
+# The blogID is a variable that must be passsed as a parameter to the function and 
+# can then be used in the query to retrieve that blog from the database. This route 
+# is called when the user clicks a link on bloglist.html template.
+# The angle brackets (<>) indicate a variable. 
+@app.route('/event/<eventID>')
+# This route will only run if the user is logged in.
+@login_required
+def event(eventID):
+    # retrieve the blog using the blogID
+    thisEvent = Event.objects.get(id=eventID)
+    # If there are no comments the 'comments' object will have the value 'None'. Comments are 
+    # related to blogs meaning that every comment contains a reference to a blog. In this case
+    # there is a field on the comment collection called 'blog' that is a reference the Blog
+    # document it is related to.  You can use the blogID to get the blog and then you can use
+    # the blog object (thisBlog in this case) to get all the comments.
+    theseComments = Comment.objects(event=thisEvent)
+    # Send the blog object and the comments object to the 'blog.html' template.
+    return render_template('event.html',event=thisEvent,comments=theseComments)
+
+# This route will delete a specific blog.  You can only delete the blog if you are the author.
+# <blogID> is a variable sent to this route by the user who clicked on the trash can in the 
+# template 'blog.html'. 
+# TODO add the ability for an administrator to delete blogs. 
+@app.route('/event/delete/<eventID>')
+# Only run this route if the user is logged in.
+@login_required
+def eventDelete(eventID):
+    # retrieve the blog to be deleted using the blogID
+    deleteEvent = Event.objects.get(id=eventID)
+    # check to see if the user that is making this request is the author of the blog.
+    # current_user is a variable provided by the 'flask_login' library.
+    if current_user == deleteEvent.author:
+        # delete the blog using the delete() method from Mongoengine
+        deleteEvent.delete()
+        # send a message to the user that the blog was deleted.
+        flash('The Event was deleted.')
+    else:
+        # if the user is not the author tell them they were denied.
+        flash("You can't delete an event you don't own.")
+    # Retrieve all of the remaining blogs so that they can be listed.
+    events = Event.objects()  
+    # Send the user to the list of remaining blogs.
+    return render_template('events.html',blogs=events)
+
+@app.route('/event/new', methods=['GET', 'POST'])
+
+@login_required
+
+def eventNew():
+
+    form = EventForm()
+
+
+    if form.validate_on_submit():
+
+
+        newEvent = Event(
+
+            subject = form.subject.data,
+            content = form.content.data,
+            tag = form.tag.data,
+            author = current_user.id,
+            modify_date = dt.datetime.utcnow
+        )
+
+        newEvent.save()
+
+        return redirect(url_for('event',eventID=newEvent.id))
+
+    return render_template('eventform.html',form=form)
+
+
+@app.route('/event/edit/<eventID>', methods=['GET', 'POST'])
+@login_required
+def eventEdit(eventID):
+    editEvent = Event.objects.get(id=eventID)
+
+    if current_user != editEvent.author:
+        flash("You can't edit an event you don't own.")
+        return redirect(url_for('event',eventID=eventID))
+
+    form = EventForm()
+
+    if form.validate_on_submit():
+
+        editEvent.update(
+            subject = form.subject.data,
+            content = form.content.data,
+            tag = form.tag.data,
+            modify_date = dt.datetime.utcnow
+        )
+
+        return redirect(url_for('event',eventID=eventID))
+
+    form.subject.data = editEvent.subject
+    form.content.data = editEvent.content
+    form.tag.data = editEvent.tag
+
+    return render_template('eventform.html',form=form)
+
+@app.route('/comment/new/<eventID>', methods=['GET', 'POST'])
+@login_required
+def commentNew(eventID):
+    event = Event.objects.get(id=eventID)
+    form = CommentForm()
+    if form.validate_on_submit():
+        newComment = Comment(
+            author = current_user.id,
+            event = eventID,
+            content = form.content.data
+        )
+        newComment.save()
+        return redirect(url_for('event',eventID=eventID))
+    return render_template('commentform.html',form=form,event=event)
+
+@app.route('/comment/edit/<commentID>', methods=['GET', 'POST'])
+@login_required
+def commentEdit(commentID):
+    editComment = Comment.objects.get(id=commentID)
+    if current_user != editComment.author:
+        flash("You can't edit a comment you didn't write.")
+        return redirect(url_for('event',eventID=editComment.event.id))
+    event = Event.objects.get(id=editComment.event.id)
+    form = CommentForm()
+    if form.validate_on_submit():
+        editComment.update(
+            content = form.content.data,
+            modifydate = dt.datetime.utcnow
+        )
+        return redirect(url_for('event',eventID=editComment.event.id))
+
+    form.content.data = editComment.content
+
+    return render_template('commentform.html',form=form,event=event)   
+
+@app.route('/comment/delete/<commentID>')
+@login_required
+def commentDelete(commentID): 
+    deleteComment = Comment.objects.get(id=commentID)
+    deleteComment.delete()
+    flash('The comments was deleted.')
+    return redirect(url_for('event',eventID=deleteComment.event.id)) 
