@@ -7,6 +7,18 @@ from app.classes.forms import EventForm, CommentForm
 from flask_login import login_required
 import datetime as dt
 
+@app.route('/events')
+@login_required
+def events():
+    events=Event.objects()
+    return render_template('events.html', events=events)
+
+@app.route('/event/<eventID>')
+@login_required
+def event(eventID):
+    thisEvent = Event.objects.get(id=eventID)
+    return render_template('event.html',event=thisEvent)
+
 @app.route('/event/delete/<eventID>')
 # Only run this route if the user is logged in.
 @login_required
@@ -26,27 +38,22 @@ def eventDelete(eventID):
     # Retrieve all of the remaining blogs so that they can be listed.
     events = Event.objects()  
     # Send the user to the list of remaining blogs.
-    return render_template('events.html',blogs=events)
+    return render_template('events.html',events=events)
 
 @app.route('/event/new', methods=['GET', 'POST'])
-
 @login_required
-
 def eventNew():
 
     form = EventForm()
-
-
     if form.validate_on_submit():
-
-
         newEvent = Event(
 
-            subject = form.subject.data,
-            content = form.content.data,
-            tag = form.tag.data,
-            author = current_user.id,
-            modify_date = dt.datetime.utcnow
+            name = form.name.data,
+            location = form.name.data,
+            time = form.time.data,
+            description = form.description.data,
+            number_of_participants = form.number_of_participants.data,
+            how_to_join = form.how_to_join.data
         )
 
         newEvent.save()
@@ -86,22 +93,22 @@ def eventEdit(eventID):
 
 @app.route('/comment/new/<eventID>', methods=['GET', 'POST'])
 @login_required
-def commentNew(eventID):
+def commentEventNew(eventID):
     event = Event.objects.get(id=eventID)
     form = CommentForm()
     if form.validate_on_submit():
-        newComment = Comment(
+        commentEventNew = Comment(
             author = current_user.id,
             event = eventID,
             content = form.content.data
         )
-        newComment.save()
+        commentEventNew.save()
         return redirect(url_for('event',eventID=eventID))
     return render_template('commentform.html',form=form,event=event)
 
 @app.route('/comment/edit/<commentID>', methods=['GET', 'POST'])
 @login_required
-def commentEdit(commentID):
+def commentEventEdit(commentID):
     editComment = Comment.objects.get(id=commentID)
     if current_user != editComment.author:
         flash("You can't edit a comment you didn't write.")
@@ -121,7 +128,7 @@ def commentEdit(commentID):
 
 @app.route('/comment/delete/<commentID>')
 @login_required
-def commentDelete(commentID): 
+def commentEventDelete(commentID): 
     deleteComment = Comment.objects.get(id=commentID)
     deleteComment.delete()
     flash('The comments was deleted.')
