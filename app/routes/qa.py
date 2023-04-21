@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request
-
-app = Flask(__name__)
+from flask_login import login_required
+from app import app
 
 # Create an empty list to store the questions and answers
 qa_list = []
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+@app.route('/qa')
+def qa():
+    return render_template('qa.html')
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -19,7 +19,7 @@ def submit():
     qa_list.append((question, answer))
 
     # Redirect back to the homepage
-    return redirect('/')
+    return render_template('qa.html')
 
 @app.route('/view')
 def view():

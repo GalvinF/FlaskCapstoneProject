@@ -57,6 +57,8 @@ class Event(Document):
     description = StringField()
     number_of_participants = StringField()
     how_to_join = StringField()
+    create_date = DateTimeField(default=dt.datetime.utcnow)
+    modify_date = DateTimeField()
 
     meta = {
         'ordering': ['-createdate']
