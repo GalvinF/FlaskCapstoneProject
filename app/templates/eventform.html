@@ -1,37 +1,61 @@
 {% extends "base.html" %}
 
 {% block body %}
-        <h1></h1>
+<h1></h1>
 
-        <form method=post>
-            {{ form.hidden_tag() }}
-            <p>
-                {{ form.subject.label }} <br>
-                {{ form.subject(size=64) }}
-                <!--List the errors for this field-->
-                {% for error in form.subject.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{ form.content.label }} <br>
-                {{ form.content(cols=64, rows=10) }}
-                <!--List the errors for this field-->
-                {% for error in form.content.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{ form.tag.label }} <br>
-                {{ form.tag(size=64) }}
-                <!--List the errors for this field-->
-                {% for error in form.subject.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{form.submit()}}
-            </p>
-        </form>
+<form method=post>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.name.label }} <br>
+        {{ form.name(size=64) }}
+        <!--List the errors for this field-->
+        {% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.location.label }} <br>
+        {{ form.location(cols=64, rows=10) }}
+        <!--List the errors for this field-->
+        {% for error in form.location.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.time.label }} <br>
+        {{ form.time(cols=64, rows=10) }}
+        <!--List the errors for this field-->
+        {% for error in form.time.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.description.label }} <br>
+        {{ form.description(cols=64, rows=10) }}
+        <!--List the errors for this field-->
+        {% for error in form.description.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p
+    ><p>
+        {{ form.number_of_participants.label }} <br>
+        {{ form.number_of_participants(cols=64, rows=10) }}
+        <!--List the errors for this field-->
+        {% for error in form.number_of_participants.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.how_to_join.label }} <br>
+        {{ form.how_to_join(size=64) }}
+        <!--List the errors for this field-->
+        {% for error in form.how_to_join.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{form.submit()}}
+    </p>
+</form>
         
 {% endblock %}

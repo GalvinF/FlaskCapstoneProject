@@ -1,0 +1,56 @@
+<!-- This is a blank template.  You can copy this to make a new template page. -->
+
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-4">
+        <h1 class="display-1">All Events</h1>
+    </div>
+    <div class="col">
+        <a href="/event/new" class="btn btn-primary btn-sm mt-5" role="button">New Event</a>
+    </div>
+</div>
+
+{% if blogs %}
+    {% for blog in blogs %}
+
+    <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{event.author.fname}} {{event.author.lname}}</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+
+        <div class="row border-bottom">
+            <div class="col-2">
+                {% if loop.index == 1 %}
+                <h3 class="display-5">Date</h3>
+                {% endif %}
+
+                <a href="/event/{{event.id}}">
+                    {{moment(event.create_date).calendar()}}
+                </a>
+            </div>
+            <div class="col-2">
+                {% if loop.index == 1 %}
+                <h3 class="display-5">User</h3>
+                {% endif %}
+                {{event.author.fname}} {{event.author.lname}}
+            </div>
+            <div class="col">
+                {% if loop.index == 1 %}
+                    <h3 class="display-5">Subject</h3>
+                {% endif %}
+                {{event.subject}}
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <h1>No Events</h1>
+{% endif %}
+
+{% endblock %}

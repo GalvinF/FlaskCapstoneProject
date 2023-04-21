@@ -28,6 +28,8 @@ class EventForm(FlaskForm):
     description = StringField('Description', validators=[DataRequired()])
     number_of_participants = StringField('Number of Participants', validators=[DataRequired()])
     how_to_join = StringField('How to join', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
 
 class CommentForm(FlaskForm):
     content = TextAreaField('Comment', validators=[DataRequired()])
