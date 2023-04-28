@@ -30,7 +30,17 @@ class EventForm(FlaskForm):
     how_to_join = StringField('How to join', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+class QAForm(FlaskForm):
+    question = StringField('Question', validators=[DataRequired()])
+    tag = StringField('Tag', validators=[DataRequired()])
+    submit = SubmitField('Question')
+
 
 class CommentForm(FlaskForm):
     content = TextAreaField('Comment', validators=[DataRequired()])
     submit = SubmitField('Comment')
+
+class AnswerForm(FlaskForm):
+    content = TextAreaField('Answer', validators=[DataRequired()])
+    submit = SubmitField('Answer')
+

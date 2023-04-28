@@ -13,8 +13,8 @@
     </div>
 </div>
 
-{% if blogs %}
-    {% for blog in blogs %}
+{% if events %}
+    {% for event in events %}
 
     <div class="card" style="width: 18rem;">
         <img src="..." class="card-img-top" alt="...">
@@ -54,3 +54,14 @@
 {% endif %}
 
 {% endblock %}
+
+<!--  author = ReferenceField('User',reverse_delete_rule=CASCADE) 
+    name = StringField()
+    location = StringField()
+    time = StringField()
+    description = StringField()
+    number_of_participants = StringField()
+    how_to_join = StringField()
+    create_date = DateTimeField(default=dt.datetime.utcnow)
+    modify_date = DateTimeField()
+ -->

@@ -2,4 +2,21 @@
 
 {% block body %}
 
+{% if comments %}
+<h1 class="display-5">Comments</h1>
+{% for comment in comments %}
+    {% if current_user == comment.author %}
+        <a href="/comment/delete/{{comment.id}}"><img width="20" src="/static/delete.png"></a> 
+        <a href="/comment/edit/{{comment.id}}"><img width="20" src="/static/edit.png"></a>
+    {% endif %}
+    {{moment(comment.create_date).calendar()}} {{comment.author.username}} 
+    {% if comment.modifydate %}
+        modified {{moment(comment.modifydate).calendar()}}
+    {% endif %}
+    <br>
+    <p class="fs-3">
+        {{comment.content}}
+    </p>
+{% endfor %}
+
 {% endblock %}
