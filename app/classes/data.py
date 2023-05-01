@@ -56,6 +56,13 @@ class Alumni(Document):
     aloccupation = StringField()
     alcollege = StringField()
     almajor = StringField()
+    create_date = DateTimeField(default=dt.datetime.utcnow)
+    modify_date = DateTimeField()
+
+    meta = {
+        'ordering': ['-create_date']
+    }
+
     
 class Blog(Document):
     author = ReferenceField('User',reverse_delete_rule=CASCADE) 
@@ -66,7 +73,7 @@ class Blog(Document):
     modify_date = DateTimeField()
 
     meta = {
-        'ordering': ['-createdate']
+        'ordering': ['-create_date']
     }
 
 class Event(Document):
@@ -81,7 +88,7 @@ class Event(Document):
     modify_date = DateTimeField()
 
     meta = {
-        'ordering': ['-createdate']
+        'ordering': ['-create_date']
     }
 
 class QA(Document):
@@ -92,7 +99,7 @@ class QA(Document):
     modify_date = DateTimeField()
 
     meta = {
-        'ordering': ['-createdate']
+        'ordering': ['-create_date']
     }
 
 class Comment(Document):
@@ -108,7 +115,7 @@ class Comment(Document):
     modify_date = DateTimeField()
 
     meta = {
-        'ordering': ['-createdate']
+        'ordering': ['-create_date']
     }
 
 class Answer(Document):
@@ -123,5 +130,5 @@ class Answer(Document):
     modify_date = DateTimeField()
 
     meta = {
-        'ordering': ['-createdate']
+        'ordering': ['-create_date']
     }
