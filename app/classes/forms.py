@@ -15,6 +15,22 @@ class ProfileForm(FlaskForm):
     submit = SubmitField('Post')
     role = SelectField('Role',choices=[("Alumni","Alumni"),("Student","Student"),("Site Moderator","Site Moderator")])
 
+class AlumniForm(FlaskForm):
+    alfname = StringField('First Name', validators=[DataRequired()])
+    allname = StringField('Last Name', validators=[DataRequired()])
+    algradyear = IntegerField('Grad Year', validators=[DataRequired()])
+    alcollege = StringField('College you attend(ed)')
+    almajor = StringField('Your college major')
+    alpathway = SelectField('OT Pathway',choices=[("Computer Science","Computer Science"),("Engineering","Engineering"),("FADA","FADA"),("RPL","RPL"),("Health","Health")])
+    alsex = SelectField('Sex',choices=[("Male","Male"),("Female","Female"),("Other","Other"),("Prefer not to say","Prefer not to say")])
+    alphonenum = IntegerField('Phone Number')
+    alemail = StringField('Email')
+    allocation = StringField('City of Residence')
+    aloccupation = StringField('Current Occupation')
+    submit = SubmitField('Submit')
+
+
+
 class BlogForm(FlaskForm):
     subject = StringField('Subject', validators=[DataRequired()])
     content = TextAreaField('Blog', validators=[DataRequired()])

@@ -4,3 +4,4 @@ from .forum import *
 from .user import *
 from .event import *
 from .qa import *
+from .alumni import *

@@ -15,7 +15,41 @@ from flask_login import current_user
 def myProfile():
     # This sends the user to their profile page which renders the 'profilemy.html' template
     return render_template('profilemy.html')
+@app.route('/alumni/edit', methods=['GET','POST'])
+@login_required
+def alumniEdit():
+    form = AlumniForm()
+    currUser = current_user
+    if form.validate_on_submit():
+        currUser.update(
+            alfname = form.alfname.data,
+            allname = form.allname.data,
+            algradyear = form.algradyear.data,
+            alcollege = form.alcollege.data,
+            almajor = form.almajor.data,
+            alpathway = form.alpathway.data,
+            alsex = form.alsex.data,
+            alphonenum = form.alphonenum.data,
+            alemail = form.alemail.data,
+            allocation = form.allocation.data,
+            aloccupation = form.aloccupation.data
+        )
 
+        # Then sends the user to their profle page
+        return redirect(url_for('myProfile'))
+    
+    form.alfname.data = current_user.alfname
+    form.allname.data = current_user.allname
+    form.algradyear.data = current_user.algradyear
+    form.alcollege.data = current_user.alcollege
+    form.almajor.data = current_user.almajor
+    form.alpathway.data = current_user.alpathway
+    form.alsex.data = current_user.alsex
+    form.alphonenum.data = current_user.alphonenum
+    form.alemail.data = current_user.alemail
+    form.allocation.data = current_user.allocation
+    form.aloccupation.data = current_user.aloccupation
+    return render_template('alumniform.html', form=form)
 # This is the route for editing a profile
 # the methods part is required if you are using a form 
 @app.route('/myprofile/edit', methods=['GET','POST'])
@@ -58,7 +92,7 @@ def profileEdit():
 
     return render_template('profileform.html', form=form)
 
-@app.route('/alumniprofiles')
-def alumniProfiles():
-    users = User.objects()
-    return render_template('alumniprofiles.html',users=users)
+# @app.route('/alumniprofiles')
+# def alumniProfiles():
+#     users = User.objects()
+#     return render_template('alumniprofiles.html',users=users)

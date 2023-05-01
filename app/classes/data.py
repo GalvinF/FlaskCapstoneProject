@@ -21,6 +21,7 @@ from time import time
 from bson.objectid import ObjectId
 
 class User(UserMixin, Document):
+# USER FIELDS
     createdate = DateTimeField(defaultdefault=dt.datetime.utcnow)
     gid = StringField(sparse=True, unique=True)
     gname = StringField()
@@ -32,10 +33,29 @@ class User(UserMixin, Document):
     image = FileField()
     prononuns = StringField()
     role = StringField()
+    phonenum = IntField()
+# STUDENT FIELDS
+    csfname = StringField()
+    cslname = StringField()
+    cstechgradyear = IntField()
+    cspathway = StringField('OT Pathway',choices=[("Computer Science","Computer Science"),("Engineering","Engineering"),("FADA","FADA"),("RPL","RPL"),("Health","Health")])
+    cssex = StringField('Sex',choices=[("Male","Male"),("Female","Female"),("Other","Other"),("Prefer not to say","Prefer not to say")])
+    csphonenum = IntField('Phone Number')
+    csemail = StringField('Email')
 
-    meta = {
-        'ordering': ['lname','fname']
-    }
+class Alumni(Document):
+# ALUMNI FIELDS
+    alfname = StringField()
+    allname = StringField()
+    algradyear = IntField()
+    alpathway = StringField()
+    alsex = StringField()
+    alphonenum = IntField()
+    alemail = StringField()
+    allocation = StringField()
+    aloccupation = StringField()
+    alcollege = StringField()
+    almajor = StringField()
     
 class Blog(Document):
     author = ReferenceField('User',reverse_delete_rule=CASCADE) 
