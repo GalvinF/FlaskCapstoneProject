@@ -6,9 +6,9 @@
 <p style="font-family: Georgia">Here is a list of the OTCSA alumni</p>
 
 <a href="/alumni/new" class="btn btn-primary btn-sm" role="button">New Profile</a>
-{% for user in users %}
+{% for alum in alumni %}
 
-    {{user.fname}}, 
+    <a href="/alumni/{{alum.id}}">{{alum.alfname}}</a> <br>
 
 {% endfor %}
 {% endblock %}

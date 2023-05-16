@@ -38,7 +38,7 @@ def alumni(alumniID):
     # there is a field on the comment collection called 'blog' that is a reference the Blog
     # document it is related to.  You can use the blogID to get the blog and then you can use
     # the blog object (thisBlog in this case) to get all the comments.
-    return render_template('alumniprofiles.html',alumni=thisAlumni)
+    return render_template('alumni.html',alumni=thisAlumni)
 
 # This route actually does two things depending on the state of the if statement 
 # 'if form.validate_on_submit()'. When the route is first called, the form has not 
@@ -67,7 +67,7 @@ def alumniNew():
             # the right side is the data the user entered which is held in the form object.
             
             alfname = form.alfname.data,
-            allname = form.alfname.data,
+            allname = form.allname.data,
             algradyear = form.algradyear.data,
             alcollege = form.alcollege.data,
             almajor = form.almajor.data,
@@ -90,7 +90,7 @@ def alumniNew():
         # to send them to that blog. url_for takes as its argument the function name
         # for that route (the part after the def key word). You also need to send any
         # other values that are needed by the route you are redirecting to.
-        return redirect(url_for('alumniList',alumniID=newAlumni.id))
+        return redirect(url_for('alumni',alumniID=newAlumni.id))
 
     # if form.validate_on_submit() is false then the user either has not yet filled out
     # the form or the form had an error and the user is sent to a blank form. Form errors are 
