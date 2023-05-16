@@ -1,4 +1,10 @@
 html body{
-    background-color: aqua;
+    background-color: purple;
+    color: white;
     text-align: center;
+}
+
+html footer{
+    background-color: purple;
+    color: white;
 }
